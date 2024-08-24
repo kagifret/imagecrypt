@@ -1,7 +1,7 @@
 from PIL import Image
 
 #IMPORTANT!!!
-#always use raw string because python takes '\' in string as escape characters
+#use raw string because python takes '\' in string as escape characters
 #image = ImageHandler.importImage(r"C:\Users\krishna\Pictures\naruto.jpg")
 #other option is to have '\\' or '/' instead of '\\' in image path
 
