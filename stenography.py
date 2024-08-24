@@ -21,6 +21,7 @@ class Stenography:
              #converting bytes to bits and putting that in the instance variable
         new_image= self.image.copy()
         pixels = self.modify_pixels(self.image.getdata())
+         #get modified pixels
         w, h = new_image.size
         pixel_iter = iter(pixels)
 
@@ -28,6 +29,7 @@ class Stenography:
             raise ValueError("message too long.")
 
         for y in range(h):
+                    #assembling modified pixels into a new image
             for x in range(w):
                 new_image.putpixel((x, y), next(pixel_iter))
 
