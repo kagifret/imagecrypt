@@ -19,6 +19,6 @@ class ImageHandler:
     @staticmethod
     def save_image(new_image, image_path):
         #saves the newImage (that we created post encoding) at imagePath specified
-        new_image.save(image_path)
+        new_image.save("encoded_image", image_path)
         return "image saved"
 
