@@ -12,6 +12,8 @@ class ImageHandler:
     def import_image(self, image_path):
         #loads an image from the imagePath given
         self.image= Image.open(image_path)
+
+    def get_image(self):
         return self.image
 
     @staticmethod
