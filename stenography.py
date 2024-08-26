@@ -78,13 +78,13 @@ class Stenography:
 
 ##TESTING##
 image_stuff = ImageHandler()
-import_result = image_stuff.import_image(r"C:\Users\krish\OneDrive\Pictures\scene.jpg")
+import_result = image_stuff.import_image("output2.jpg")
 
 if import_result == "importing image success":
     sten = Stenography(image_stuff)
     image = sten.encode_image("Hi! This is me".encode('utf-8'))
     if image:
-        save_result = image_stuff.save_image(image, r"C:\Users\krish\PycharmProjects\imagecrypt\encoded_image.png")
+        save_result = image_stuff.save_image(image, "encoded_image.jpg")
         print(save_result)
     else:
         print("Failed to encode image.")
