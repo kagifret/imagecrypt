@@ -3,6 +3,7 @@ from PIL import Image
 from imagehandler import ImageHandler
 
 class Stenography:
+    #ONLY USE PNG IMAGES !!! DO NOT USE JPG UNLESS YOU WANT TO CRY !!!!
     #when calling stenography, pass an imageHandler object
     #example (next 2 lines):
     #image_stuff = ImageHandler()
@@ -51,11 +52,11 @@ class Stenography:
         message_length = len(message_bits)
         pixel = iter(pixels)
 
-        for bit in range(message_length):
+        for i in range(0, message_length, 8):
             #when there is message left to encrypt, encodes pixels
-                current_pixel  = list(next(pixel)[:3]+next(pixel)[:3]+ next(pixel)[:3])
+                current_pixel  = list(next(pixel)[:3]+ next(pixel)[:3]+ next(pixel)[:3])
                 #9 pixels are encoded at once: 8 bits per byte + 1 bit that lets us know if we should keep decoding
-
+                bit = i
                 for j in range (0, 8): #changing RGB values based on message
                     if (message_bits[bit] == '0') and (current_pixel[j] % 2 != 0):
                         current_pixel[j] -= 1
@@ -64,18 +65,17 @@ class Stenography:
                             current_pixel[j] -= 1
                         else:
                             current_pixel[j] += 1
+                    bit += 1
 
                 #check if it is the last bit of the message and indicate in 9th bit
-                if bit == message_length - 1:
+                if bit == message_length:
                     if current_pixel[-1] % 2 == 0:
                         if current_pixel[-1] != 0:
                             current_pixel[-1] -= 1
                         else:
                             current_pixel[-1] += 1
-
-                else:
-                        if current_pixel[-1] % 2 != 0:
-                            current_pixel[-1] -= 1
+                elif current_pixel[-1] % 2 != 0:
+                        current_pixel[-1] -= 1
 
                 # Yield the modified pixel tuples
                 current_pixel= tuple(current_pixel)
@@ -83,27 +83,59 @@ class Stenography:
                 yield current_pixel[3:6]
                 yield current_pixel[6:9]
 
-    def decode(self,image_path):
-        i = 1
-        #before this, import image using image_handler
+    def decode_image(self):
+        # before this, import image using image_handler
+        # this returns the encrypted message
+        #the message needs to be decrypted
+        encrypted_message = b''  # initializing a byte string
+        image_data = iter(self.image.getdata())  # accessing image data into an iterator
+        while (True):
+            pixels = list(next(image_data)[:3]+ next(image_data)[:3]+ next(image_data)[:3])
+            binstring = ''
+            counter = 1
+            for pixel in pixels: #decrypting all but every 9th pixel in the array
+                if counter % 9 == 0:
+                    continue
+                if pixel % 2 == 0:
+                    binstring += '0'
+                else:
+                    binstring += '1'
+                counter += 1
+            encrypted_message += bytes([int(binstring, 2)]) #will need to be decrypted
+            if pixels[-1] % 2 != 0:
+                return encrypted_message
 
+# TESTING 1. encoding
 
-
-
-
-
-##TESTING##
 image_stuff = ImageHandler()
-import_result = image_stuff.import_image("output2.jpg")
+import_result = image_stuff.import_image("output2.png")
 
 if import_result == "importing image success":
     sten = Stenography(image_stuff)
-    image = sten.encode_image("Hi! This is me".encode('utf-8'))
+    image = sten.encode_image("Hi! This is Krishna- Test #idek. Success!!".encode('utf-8'))
     if image:
-        save_result = image_stuff.save_image(image, "encoded_image.jpg")
+        save_result = image_stuff.save_image(image, "encoded_image2.png")
         print(save_result)
     else:
         print("Failed to encode image.")
+else:
+    print(import_result)
+
+    # TESTING 2. decoding
+
+image_stuff2 = ImageHandler()
+    #different object from the first one. Using same object might not work
+    #don't think it matters because we don't encode and decode at same time but yeah
+import_result = image_stuff2.import_image("encoded_image2.png")
+
+if import_result == "importing image success":
+    print("decoding image:")
+    sten = Stenography(image_stuff2)
+    hidden_message = sten.decode_image()
+    if hidden_message is not None:
+        print(hidden_message)
+    else:
+        print("Failed to decode image.")
 else:
     print(import_result)
 
