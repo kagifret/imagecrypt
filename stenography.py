@@ -105,7 +105,7 @@ class Stenography:
             if pixels[-1] % 2 != 0:
                 return encrypted_message
 
-# TESTING 1. encoding
+'''# TESTING 1. encoding
 
 image_stuff = ImageHandler()
 import_result = image_stuff.import_image("output2.png")
@@ -121,7 +121,7 @@ if import_result == "importing image success":
 else:
     print(import_result)
 
-    # TESTING 2. decoding
+# TESTING 2. decoding
 
 image_stuff2 = ImageHandler()
     #different object from the first one. Using same object might not work
@@ -137,7 +137,7 @@ if import_result == "importing image success":
     else:
         print("Failed to decode image.")
 else:
-    print(import_result)
+    print(import_result)'''
 
 
 
