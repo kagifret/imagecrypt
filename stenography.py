@@ -2,10 +2,11 @@ from PIL import Image
 
 from imagehandler import ImageHandler
 
-
 class Stenography:
-    def __init__(self):
-        self.image= ImageHandler.get_image()
+    def __init__(self, image_handler):
+        self.image= image_handler.get_image()
+        if self.image is None:
+            raise ValueError("Failed to load image. Please check the image path and format.")
         self.message= None
 
     def set_message(self, encrypted_message):
@@ -15,7 +16,7 @@ class Stenography:
         self.message = binary_message
         return True
 
-    def encode_image(self, encrypted_message, final_image_path):
+    def encode_image(self, encrypted_message):
         # encrypt message and then call this
         # assumption is that the encrypted message is in bytes
         if not self.set_message(encrypted_message):
@@ -33,8 +34,7 @@ class Stenography:
             for x in range(w):
                 new_image.putpixel((x, y), next(pixel_iter))
 
-        image_handler= ImageHandler()
-        image_handler.save_image(new_image, final_image_path)
+        return new_image
 
     def modify_pixels(self, pixels):
        #modify pixel data and return an 8 bit binary list
@@ -76,10 +76,20 @@ class Stenography:
             yield pixel
 
 
+##TESTING##
+image_stuff = ImageHandler()
+import_result = image_stuff.import_image(r"C:\Users\krish\OneDrive\Pictures\scene.jpg")
 
-
-
-
+if import_result == "importing image success":
+    sten = Stenography(image_stuff)
+    image = sten.encode_image("Hi! This is me".encode('utf-8'))
+    if image:
+        save_result = image_stuff.save_image(image, r"C:\Users\krish\PycharmProjects\imagecrypt\encoded_image.png")
+        print(save_result)
+    else:
+        print("Failed to encode image.")
+else:
+    print(import_result)
 
 
 
