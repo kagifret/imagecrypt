@@ -25,15 +25,17 @@ class Stenography:
         new_image= self.image.copy()
         modified_pixels = self.modify_pixels(self.image.getdata())
          #get modified pixels
-        w, h = new_image.size
-        pixel_iter = iter(modified_pixels)
+        w = new_image.size[0]
+        (x,y) = (0,0)
 
         #assembling modified image to new image
-        for y in range(h):
-                    #assembling modified pixels into a new image
-            for x in range(w):
-                new_image.putpixel((x, y), next(pixel_iter))
-
+        for pix in modified_pixels:
+            new_image.putpixel((x, y), pix)
+            if (x == w - 1):
+                x = 0
+                y += 1
+            else:
+                x += 1
         return new_image
 
     def modify_pixels(self, pixels):
@@ -72,8 +74,6 @@ class Stenography:
                 yield current_pixel[3:6]
                 yield current_pixel[6:9]
 
-        for pixel in pixels:
-            yield pixel
 
 
 ##TESTING##
