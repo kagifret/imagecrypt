@@ -6,7 +6,6 @@ build/
 env/
 venv/
 .vscode/
-mainTest.py\
 .idea
 idea/
 debug_encryption_decryption.py
