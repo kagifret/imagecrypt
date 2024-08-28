@@ -8,6 +8,6 @@ venv/
 .vscode/
 .idea
 idea/
-debug_encryption_decryption.py
-encryptionhandler_tbm.py
-controller_tbm.py
+dist/
+.DS_Store
+legacy/

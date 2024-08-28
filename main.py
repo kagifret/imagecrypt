@@ -1,5 +1,5 @@
 import tkinter as tk
-from gui import ImageCryptGUI #import GUI class from gui.py
+from modules.gui import ImageCryptGUI #import GUI class from gui.py
 
 def main():
     app = ImageCryptGUI()
