@@ -40,11 +40,6 @@ class ImageCryptGUI(tk.Tk): #GUI class definitions
         self.password_label.pack(pady=5)
         self.password_entry = tk.Entry(self, show="*", width=50)
         self.password_entry.pack(pady=5)
-
-        self.salt_label = tk.Label(self, text="Salt value (don't forget it! Use for decryption):") # salt value output and input (both modes)
-        self.salt_label.pack(pady=5)
-        self.salt_entry = tk.Entry(self, width=50)
-        self.salt_entry.pack(pady=5)
         
         self.process_button = tk.Button(self, text="Proceed", command=self.process_message) # to embed the message onto image button or to decrypt (both modes)
         self.process_button.pack(pady=5)
@@ -85,40 +80,31 @@ class ImageCryptGUI(tk.Tk): #GUI class definitions
     
     def extract_message(self):
         password = self.password_entry.get()
-        salt = self.salt_entry.get().encode() # converts the salt value to bytes
         
-        if not password or not salt:
+        if not password:
             messagebox.showwarning("Input Error", "Please provide the password and the salt value") # error handling for decryption process
             return
         
-        self.controller.extract_message(password, salt)
+        self.controller.extract_message(password)
+
+
+    def display_extracted_text(self, text): # displays the decrypted text
+        self.output_text.delete(1.0, tk.END)
+        self.output_text.insert(tk.END, text)
 
     def update_status(self, message):
         self.status_label.config(text=message)
 
-    def show_salt(self, salt):
-        self.salt_label.pack(pady=5)
-        self.salt_entry.pack(pady=5)
-        self.salt_entry.delete(0, tk.END)
-        self.salt_entry.insert(0, base64.urlsafe_b64encode(salt).decode())  # displays the salt value
-    
-    def display_extracted_text(self, text):
-        self.output_text.delete(1.0, tk.END)
-        self.output_text.insert(tk.END, text)
 
     def toggle_mode(self): # toggle mode specific configs
         if self.mode.get() == "encrypt":
             self.process_button.config(text="Embed the hidden message")
             self.message_label.pack(pady=5)
             self.message_entry.pack(pady=5)
-            self.salt_label.pack_forget()
-            self.salt_entry.pack_forget()
             self.output_text.pack_forget()
         else:
             self.process_button.config(text="Decrypt image")
             self.message_label.pack_forget()
             self.message_entry.pack_forget()
-            self.salt_label.config(text="Salt value (Required for decryption):")
-            self.salt_label.pack(pady=5)
-            self.salt_entry.pack(pady=5)
+
             self.output_text.pack(pady=5)
