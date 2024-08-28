@@ -138,7 +138,3 @@ if import_result == "importing image success":
         print("Failed to decode image.")
 else:
     print(import_result)'''
-
-
-
-
