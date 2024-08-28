@@ -7,10 +7,18 @@ class Controller:
     def __init__(self, gui):
         self.gui = gui # loads the GUI
         self.image_handler = ImageHandler() # loads the imagehandler
+        self.image_handler2 = ImageHandler()
 
     def load_image(self, image_path): # method to load the image
         try:
             result = self.image_handler.import_image(image_path) # use import method from imagehandler
+            self.gui.update_status(result) # update GUI
+        except Exception as e:
+            self.gui.update_status(f"Couldn't load an image (Try PNG): {str(e)}")
+
+    def load_image2(self, image_path): # method to load the image
+        try:
+            result = self.image_handler2.import_image(image_path) # use import method from imagehandler
             self.gui.update_status(result) # update GUI
         except Exception as e:
             self.gui.update_status(f"Couldn't load an image (Try PNG): {str(e)}")
@@ -40,9 +48,12 @@ class Controller:
 
     def extract_message(self, password): #  extracting the message from an image
         try:
+            if self.image_handler2.get_image() is None:
+                raise ValueError("No image has been loaded. Please load an image before attempting to decrypt.")
+
             self.gui.update_status("Attempting to decode the image")
             
-            stenography = Stenography(self.image_handler) #  calls for stenography class
+            stenography = Stenography(self.image_handler2) #  calls for stenography class
             encrypted_message = stenography.decode_image() # decodes the image
 
             self.gui.update_status("Decrypting the message")

@@ -30,6 +30,8 @@ class ImageCryptGUI(tk.Tk): #GUI class definitions
         
         self.load_image_button = tk.Button(self, text="Load Image", command=self.load_image) # image button loading
         self.load_image_button.pack(pady=5)
+        self.load_image_button2 = tk.Button(self, text="Load Image", command=self.load_image2)  # image button loading
+        self.load_image_button2.pack(pady=5)
         
         self.message_label = tk.Label(self, text="Hidden message to Embed:") # message input (encryption mode)
         self.message_label.pack(pady=5)
@@ -58,6 +60,13 @@ class ImageCryptGUI(tk.Tk): #GUI class definitions
             self.image_path_entry.delete(0, tk.END) # refreshes the path variable
             self.image_path_entry.insert(0, image_path)
             self.controller.load_image(image_path) # loads an image for imagehandler
+
+    def load_image2(self):
+        image_path = filedialog.askopenfilename(filetypes=[("PNG files", "*.png")]) # accepts PNG images
+        if image_path:
+            self.image_path_entry.delete(0, tk.END) # refreshes the path variable
+            self.image_path_entry.insert(0, image_path)
+            self.controller.load_image2(image_path) # loads an image for imagehandler2
 
     def process_message(self): #used for processs differentiation between the modes (encrypt or decrypt)
         if self.mode.get() == "encrypt": 
@@ -95,16 +104,64 @@ class ImageCryptGUI(tk.Tk): #GUI class definitions
     def update_status(self, message):
         self.status_label.config(text=message)
 
+    def toggle_mode(self):
+        # Clear all widgets first
+        self.message_label.pack_forget()
+        self.message_entry.pack_forget()
+        self.load_image_button.pack_forget()
+        self.load_image_button2.pack_forget()
+        self.output_text.pack_forget()
+        self.image_path_entry.pack_forget()
+        self.password_entry.pack_forget()
+        self.process_button.pack_forget()
+        self.image_path_label.pack_forget()
+        self.password_label.pack_forget()
 
-    def toggle_mode(self): # toggle mode specific configs
+        # Now, pack widgets according to the selected mode
+        if self.mode.get() == "encrypt":
+            self.process_button.config(text="Embed the hidden message")
+
+            # Order of widgets for encryption
+            self.image_path_label.pack(pady=5)
+            self.image_path_entry.pack(pady=5)
+            self.load_image_button.pack(pady=5)
+
+            self.password_label.pack(pady=5)
+            self.password_entry.pack(pady=5)
+
+            self.message_label.pack(pady=5)
+            self.message_entry.pack(pady=5)
+
+            self.process_button.pack(pady=5)
+
+        else:  # Decrypt mode
+            self.process_button.config(text="Decrypt image")
+
+            # Order of widgets for decryption
+            self.image_path_label.pack(pady=5)
+            self.image_path_entry.pack(pady=5)
+            self.load_image_button2.pack(pady=5)
+
+            self.password_label.pack(pady=5)
+            self.password_entry.pack(pady=5)
+
+            self.process_button.pack(pady=5)
+
+            self.output_text.pack(pady=5)
+
+    '''def toggle_mode(self): # toggle mode specific configs
+
         if self.mode.get() == "encrypt":
             self.process_button.config(text="Embed the hidden message")
             self.message_label.pack(pady=5)
             self.message_entry.pack(pady=5)
+            self.load_image_button.pack(pady=5)
+            self.load_image_button2.pack_forget()
             self.output_text.pack_forget()
         else:
             self.process_button.config(text="Decrypt image")
             self.message_label.pack_forget()
             self.message_entry.pack_forget()
-
-            self.output_text.pack(pady=5)
+            self.load_image_button2.pack(pady=5)
+            self.load_image_button.pack_forget()
+            self.output_text.pack(pady=5)'''
