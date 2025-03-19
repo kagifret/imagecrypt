@@ -1,8 +1,8 @@
-# **ImageCrypt: Portable Stenography**
+# **ImageCrypt: Portable Steganography**
 
 ## **Table of Contents**
 
-- [**ImageCrypt: Portable Stenography**](#imagecrypt-portable-stenography)
+- [**ImageCrypt: Portable Steganography**](#imagecrypt-portable-stenography)
   - [**Table of Contents**](#table-of-contents)
   - [**Overview**](#overview)
   - [**Features**](#features)
